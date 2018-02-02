@@ -1,0 +1,33 @@
+
+INSERT INTO TEST_SALES_DETAILS (sales_id, sales_details_id, date, item, price, quantity, line_total)
+VALUES (1, 3, TO_DATE('17/12/2015', 'DD/MM/YYYY'), 2, 100.0, 1, 100.0);
+INSERT INTO TEST_SALES_DETAILS (sales_id, sales_details_id, date, item, price, quantity, line_total)
+VALUES (3, 3, TO_DATE('20/12/2015', 'DD/MM/YYYY'), 3, 10, 3, 30.0);
+
+INSERT INTO TEST_SALES_DETAILS (sales_id, sales_details_id, date, item, price, quantity, line_total)
+VALUES (3, 2, TO_DATE('31/12/2015', 'DD/MM/YYYY'), 5, 10.0, 6, 60.0);
+INSERT INTO TEST_SALES_DETAILS (sales_id, sales_details_id, date, item, price, quantity, line_total)
+VALUES (3, 4, TO_DATE('04/12/2015', 'DD/MM/YYYY'), 9, 15.0, 3, 45.0);
+
+select * FROM test_sales_details;
+
+SELECT 
+    SALES_ID, 
+    SUM(LINE_TOTAL) AS TOTAL
+FROM TEST_SALES_DETAILS
+    GROUP BY SALES_ID;
+    
+SELECT 
+    SALES_ID
+    , PRICE
+    , DATE
+    , ITEM
+    , QUANTITY
+    , LINE_TOTAL
+    , COUNT(LINE_TOTAL) OVER(PARTITION BY SALES_ID) AS COUNT_TOTAL
+    , SUM(LINE_TOTAL) OVER(PARTITION BY SALES_ID) AS SALES_TOTAL
+    , SUM(LINE_TOTAL) OVER() AS TOTAL
+    , SUM(LINE_TOTAL) OVER(PARTITION BY DATE) AS DAILY_TOTAL
+    FROM TEST_SALES_DETAILS
+    ORDER BY SALES_TOTAL;
+    
